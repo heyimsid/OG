@@ -18,7 +18,7 @@ if (cursor) {
     cursor.style.top = e.clientY + 'px';
   });
 
-  document.querySelectorAll('a, button, .discipline, .stack-items span, .choice-card').forEach(el => {
+  document.querySelectorAll('a, button, .discipline, .stack-items span, .archive-card').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '38px';
       cursor.style.height = '38px';
