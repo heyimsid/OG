@@ -63,9 +63,32 @@ section:not(.hero){padding:110px var(--pad)}
 .statement{min-height:80vh;display:flex;flex-direction:column;justify-content:space-between}
 .huge{font-size:clamp(80px,15vw,230px);line-height:.76;letter-spacing:-.095em;font-weight:900}
 .contact{min-height:100vh;display:flex;flex-direction:column}
-.contact-main{margin:auto 0}
-.contact-main>p{opacity:.5;margin-bottom:30px}
+.contact-main{margin:auto 0;display:flex;align-items:center;justify-content:space-between;gap:50px}
+.contact-text{flex:1;min-width:0}
+.contact-text>p{opacity:.5;margin-bottom:30px}
 .email{display:inline-block;margin-top:60px;font:12px "DM Mono",monospace;border-bottom:1px solid var(--line);padding-bottom:10px}
+
+/* ---------- CONTACT IMAGE (WITH CONTAINER, matches avatar treatment) ---------- */
+.contact-visual{
+  flex-shrink:0;
+  width:clamp(150px,18vw,230px);
+  aspect-ratio:4/5;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+.contact-visual img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:grayscale(100%) contrast(120%) brightness(95%);
+  transition:transform .5s ease,filter .5s ease;
+}
+.contact-visual:hover img{
+  transform:scale(1.05);
+  filter:grayscale(60%) contrast(115%) brightness(100%);
+}
 footer{border-top:1px solid var(--line);padding-top:20px;margin-top:auto;display:flex;justify-content:space-between;font:9px "DM Mono",monospace;opacity:.6}
 footer div{display:flex;gap:25px}
 .reveal{opacity:0;transform:translateY(35px);transition:opacity .9s ease,transform .9s ease}
@@ -113,6 +136,22 @@ footer div{display:flex;gap:25px}
   transform: rotate(-8deg) scale(1.05);
 }
 
+/* ---------- HERO RIGHT-SIDE IMAGE (NO CONTAINER / FRAMELESS) ---------- */
+/* Plain image, no border/box/background — sized proportionally like the
+   name-side avatar image above (same 4:5 ratio), just larger + unboxed. */
+.hero-side-image{
+  position:absolute;
+  right:calc(var(--pad) + 2vw);
+  top:50%;
+  transform:translateY(-50%);
+  width:clamp(150px,20vw,300px);
+  aspect-ratio:4/5;
+  object-fit:cover;
+  z-index:1;
+  pointer-events:none;
+  user-select:none;
+}
+
 @media(max-width:760px){
   .nav-center{display:none}.hero{padding-top:180px;min-height:90vh}.hero-meta{top:105px}
   .hero-shape{width:90vw;height:90vw;right:-35%;top:34%}.hero-mark{bottom:30px}
@@ -131,6 +170,17 @@ footer div{display:flex;gap:25px}
   .hero-avatar {
     width: 110px;
     height: 135px;
+  }
+  .hero-side-image{
+    display:none;
+  }
+  .contact-main{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:30px;
+  }
+  .contact-visual{
+    width:140px;
   }
 }
 
@@ -151,108 +201,214 @@ body.light-start .nav{color:#fff}
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
-/* ---------- FIXED CHOICES GARAGE STUDIO CARDS (NO GLITCH/OVERLAP) ---------- */
-.choices-deck-section {
-  background-color: var(--black);
-  color: var(--white);
-  overflow: visible;
-}
-.choices-deck-section .archive-kicker { color: var(--gray); }
-.choices-deck-section .archive-note { color: #a1a1aa; }
-.choices-deck-section .archive-caption { border-top-color: var(--line); }
+/* ==========================================================================
+   SHARED FAN-DECK CARD SYSTEM
+   Used by BOTH ".cards-section" (Visual Archive) and the Elite Choices
+   ".choices-deck-section". Each card's rotation / x-offset / stack order
+   is stored in CSS custom properties (--rot / --x / --z) and the hover
+   state re-applies the SAME --x offset instead of dropping it — that
+   dropped-offset was what caused the overlap/glitch when hovering the
+   first card (it snapped back to dead-center under the other cards).
+   ========================================================================== */
 
-.choices-stage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: min(48vw, 560px);
-  min-height: 420px;
-  position: relative;
-  margin: 85px auto 55px;
-  max-width: 1100px;
-  perspective: 1400px;
-  overflow: visible;
+.cards-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:40px;
+  flex-wrap:wrap;
 }
-
-.choices-stage .archive-card {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(26vw, 290px);
-  height: min(35vw, 390px);
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  border-radius: 18px;
-  overflow: hidden;
-  transform-origin: 50% 100%;
-  will-change: transform;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, filter 0.4s ease, z-index 0.4s ease;
+.archive-kicker{ opacity:.6; margin-bottom:14px; }
+.archive-note{ max-width:340px; font-size:14px; line-height:1.6; opacity:.75; }
+.archive-caption{
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid var(--light-line);
+  padding-top:18px;
+  opacity:.6;
 }
 
-.choices-stage .card-no {
-  color: #111;
-  background: rgba(255, 255, 255, 0.85);
-  padding: 3px 8px;
-  border-radius: 4px;
+.card-stage{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:min(48vw,560px);
+  min-height:420px;
+  position:relative;
+  margin:85px auto 55px;
+  max-width:1100px;
+  perspective:1400px;
+  overflow:visible;
+}
+
+.card-stage .card-shadow{
+  position:absolute;
+  bottom:6%;
+  left:50%;
+  transform:translateX(-50%);
+  width:60%;
+  height:34px;
+  background:rgba(0,0,0,.28);
+  filter:blur(22px);
+  border-radius:50%;
+  z-index:0;
+  pointer-events:none;
+}
+
+.card-stage .archive-card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(26vw,290px);
+  height:min(35vw,390px);
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 15px 35px rgba(0,0,0,.22);
+  border-radius:18px;
+  overflow:hidden;
+  transform-origin:50% 100%;
+  will-change:transform;
+  transition:transform .4s cubic-bezier(.25,1,.5,1), box-shadow .4s ease, filter .4s ease;
+  /* base fanned position, driven by per-card variables set below */
+  transform:translate(-50%,-50%) rotate(var(--rot,0deg)) translateX(var(--x,0px));
+  z-index:var(--z,1);
+}
+
+/* Hover: pop forward, straighten, but KEEP this card's own --x offset
+   so it stays in its own lane instead of jumping to center. */
+.card-stage .archive-card:hover{
+  z-index:100 !important;
+  transform:translate(-50%,-50%) translateX(var(--x,0px)) translateY(-28px) scale(1.06) rotate(0deg) !important;
+  box-shadow:0 30px 60px rgba(0,0,0,.35), 0 0 20px rgba(0,0,0,.08);
+  filter:brightness(1.03);
+}
+
+/* Dim the rest of the deck while one card is focused */
+.card-stage:hover .archive-card:not(:hover){
+  filter:brightness(.7);
+}
+
+/* Fanned stack order & positions — Visual Archive deck */
+.card-a{ --rot:-15deg; --x:-210px; --z:10; }
+.card-b{ --rot:-5deg;  --x:-70px;  --z:20; }
+.card-c{ --rot:5deg;   --x:70px;   --z:30; }
+.card-d{ --rot:15deg;  --x:210px;  --z:40; }
+
+/* Fanned stack order & positions — Elite Choices deck */
+.card-choice-1{ --rot:-15deg; --x:-210px; --z:10; }
+.card-choice-2{ --rot:-5deg;  --x:-70px;  --z:20; }
+.card-choice-3{ --rot:5deg;   --x:70px;   --z:30; }
+.card-choice-4{ --rot:15deg;  --x:210px;  --z:40; }
+
+/* Visual Archive card art (light-themed section) */
+.card-stage .card-art{ position:absolute; inset:0; z-index:0; }
+.card-stage .card-no{
+  position:absolute;
+  top:14px; left:14px;
+  z-index:2;
+  color:#111;
+  background:rgba(255,255,255,.85);
+  padding:3px 8px;
+  border-radius:4px;
+}
+/* Bottom label used by the Visual Archive cards (direct <span> child) */
+.card-stage .archive-card:not(.vehicle-card)::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:42%;
+  background:linear-gradient(to top, rgba(0,0,0,.78), transparent);
+  z-index:1;
+  pointer-events:none;
+}
+.card-stage .archive-card > span{
+  position:absolute;
+  bottom:16px; left:16px;
+  z-index:2;
+  color:#fff;
+  font-weight:800;
+  font-size:14px;
+  letter-spacing:-.01em;
+}
+
+.art-grid{
+  background:
+    linear-gradient(rgba(0,0,0,.08) 1px, transparent 1px) 0 0/22px 22px,
+    linear-gradient(90deg, rgba(0,0,0,.08) 1px, transparent 1px) 0 0/22px 22px,
+    #e9e6df;
+}
+.art-xai{ background:linear-gradient(135deg,#ddd9cf,#6e6b64 55%,#181818); }
+.art-nexus{ background:radial-gradient(circle at 50% 45%,#59606a,#151719 48%,#070707); }
+.art-cyber{ background:radial-gradient(circle,#303633,#0b0c0c 55%); }
+
+/* ---------- ELITE CHOICES (dark section) ---------- */
+.choices-deck-section{
+  background-color:var(--black);
+  color:var(--white);
+  overflow:visible;
+}
+.choices-deck-section .archive-kicker{ color:var(--gray); }
+.choices-deck-section .archive-note{ color:#a1a1aa; }
+.choices-deck-section .archive-caption{ border-top-color:var(--line); }
+
+.choices-stage .archive-card{
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 15px 35px rgba(0,0,0,.4);
+}
+.choices-stage .archive-card:hover{
+  box-shadow:0 30px 60px rgba(0,0,0,.7), 0 0 20px rgba(255,255,255,.12);
+}
+.choices-stage .card-no{
+  color:#111;
+  background:rgba(255,255,255,.85);
+  padding:3px 8px;
+  border-radius:4px;
 }
 
 /* Studio-styled car images */
-.vehicle-art-1 {
-  background: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-}
-.vehicle-art-2 {
-  background: url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-}
-.vehicle-art-3 {
-  background: url('https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-}
-.vehicle-art-4 {
-  background: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-}
+.vehicle-art-1{ background:url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat; }
+.vehicle-art-2{ background:url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat; }
+.vehicle-art-3{ background:url('https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat; }
+.vehicle-art-4{ background:url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat; }
 
 /* Bottom banner */
-.vehicle-info-bar {
-  position: absolute;
-  bottom: 0; left: 0; width: 100%;
-  padding: 26px 20px 18px;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  pointer-events: none;
+.vehicle-info-bar{
+  position:absolute;
+  bottom:0; left:0; width:100%;
+  padding:26px 20px 18px;
+  background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 60%, transparent 100%);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  pointer-events:none;
 }
-.vehicle-info-bar span {
-  position: static;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+.vehicle-info-bar span{
+  position:static;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:-.01em;
 }
-.v-arrow {
-  font-size: 18px;
-  opacity: 0.8;
-  transition: transform 0.3s ease;
+.v-arrow{
+  font-size:18px;
+  opacity:.8;
+  transition:transform .3s ease;
 }
-.archive-card:hover .v-arrow {
-  transform: translateX(4px);
-}
+.archive-card:hover .v-arrow{ transform:translateX(4px); }
 
-/* Base Fanned Stack Order & Positions */
-.card-choice-1 { transform: translate(-50%, -50%) rotate(-15deg) translateX(-210px); z-index: 10; }
-.card-choice-2 { transform: translate(-50%, -50%) rotate(-5deg) translateX(-70px); z-index: 20; }
-.card-choice-3 { transform: translate(-50%, -50%) rotate(5deg) translateX(70px); z-index: 30; }
-.card-choice-4 { transform: translate(-50%, -50%) rotate(15deg) translateX(210px); z-index: 40; }
-
-/* Individual Clean Pop-Up Hover (Zero Glitch) */
-.choices-stage .archive-card:hover {
-  z-index: 100 !important;
-  transform: translate(-50%, -50%) scale(1.06) translateY(-28px) rotate(0deg) !important;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.12);
-  filter: brightness(1.05);
-}
-
-/* Smooth fade on non-hovered elements to direct focus */
-.choices-stage:hover .archive-card:not(:hover) {
-  filter: brightness(0.55);
+/* ---------- FAN DECK — MOBILE (prevents cards overflowing viewport) ---------- */
+@media(max-width:760px){
+  .card-stage{
+    height:320px;
+    min-height:320px;
+    margin:50px auto 40px;
+  }
+  .card-stage .archive-card{
+    width:150px;
+    height:200px;
+  }
+  .card-a, .card-choice-1{ --x:-95px; }
+  .card-b, .card-choice-2{ --x:-32px; }
+  .card-c, .card-choice-3{ --x:32px; }
+  .card-d, .card-choice-4{ --x:95px; }
 }
