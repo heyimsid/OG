@@ -72,6 +72,47 @@ footer div{display:flex;gap:25px}
 .reveal.visible{opacity:1;transform:none}
 .noise{pointer-events:none;position:fixed;inset:0;z-index:30;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
 .cursor{position:fixed;width:14px;height:14px;border:1px solid white;border-radius:50%;pointer-events:none;z-index:50;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+
+/* ---------- HERO PROFILE IMAGE (B&W & STRAIGHT) ---------- */
+.hero-header-row {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  flex-wrap: wrap;
+}
+
+.hero-avatar {
+  width: clamp(130px, 15vw, 195px);
+  height: clamp(160px, 19vw, 245px);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Straightens the angle and converts to high-contrast black & white */
+  transform: rotate(-8deg);
+  transform-origin: center center;
+  filter: grayscale(100%) contrast(125%) brightness(95%);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.hero-avatar:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.hero-avatar:hover img {
+  transform: rotate(-8deg) scale(1.05);
+}
+
 @media(max-width:760px){
   .nav-center{display:none}.hero{padding-top:180px;min-height:90vh}.hero-meta{top:105px}
   .hero-shape{width:90vw;height:90vw;right:-35%;top:34%}.hero-mark{bottom:30px}
@@ -81,6 +122,16 @@ footer div{display:flex;gap:25px}
   .project-info{display:block}.tags{margin-top:22px}.discipline{grid-template-columns:45px 1fr 30px}
   .discipline strong{font-size:32px}.statement{min-height:70vh}footer{display:block;line-height:2.5}footer div{margin-top:8px}
   .cursor{display:none}
+  
+  .hero-header-row {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 22px;
+  }
+  .hero-avatar {
+    width: 110px;
+    height: 135px;
+  }
 }
 
 /* ---------- LIGHT START THEME ---------- */
@@ -95,76 +146,9 @@ body.light-start .nav{color:#fff}
 .light-start .hero h1{font-weight:900}
 .light-start .hero h1 span{font-weight:500}
 .light-start .cursor{border-color:#000;mix-blend-mode:multiply}
-
-/* ---------- REFERENCE-STYLE CARD DECK ---------- */
-.cards-section{min-height:100vh;overflow:hidden;padding-bottom:70px}
-.cards-top{display:grid;grid-template-columns:1fr .35fr;gap:8vw;align-items:end}
-.archive-kicker{margin-bottom:25px;opacity:.48}
-.archive-note{font-size:13px;line-height:1.65;max-width:300px;color:#6b6964}
-.card-stage{
-  height:min(48vw,560px);min-height:390px;position:relative;
-  margin:85px auto 55px;max-width:1100px;
-  perspective:1200px;
-}
-.archive-card{
-  position:absolute;left:50%;top:50%;
-  width:min(27vw,300px);height:min(36vw,400px);
-  background:#e8e6df;border:1px solid rgba(0,0,0,.14);
-  box-shadow:0 25px 55px rgba(0,0,0,.12);
-  transform-origin:center bottom;
-  overflow:hidden;
-  transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s;
-}
-.archive-card span{
-  position:absolute;left:22px;bottom:21px;
-  font-size:12px;font-weight:700;letter-spacing:-.03em; color:#111;
-}
-.card-no{position:absolute;top:17px;left:18px;z-index:2;opacity:.55}
-.card-art{position:absolute;inset:0}
-.art-grid{
-  background:
-    linear-gradient(90deg,transparent 49.5%,rgba(0,0,0,.16) 50%,transparent 50.5%),
-    linear-gradient(transparent 49.5%,rgba(0,0,0,.16) 50%,transparent 50.5%),
-    repeating-linear-gradient(0deg,#d8d6cf 0 2px,transparent 2px 45px),
-    repeating-linear-gradient(90deg,#d8d6cf 0 2px,transparent 2px 45px);
-}
-.art-xai{
-  background:
-    radial-gradient(circle at 50% 43%,#f4f1e9 0 10%,transparent 10.5%),
-    linear-gradient(135deg,#bcb9b0,#f0eee7 43%,#96938a);
-}
-.art-xai:after{
-  content:"";position:absolute;width:62%;height:42%;left:19%;top:29%;
-  border:1px solid rgba(0,0,0,.4);transform:rotate(-11deg);
-  box-shadow:35px 18px 0 -1px rgba(0,0,0,.08);
-}
-.art-nexus{
-  background:
-    radial-gradient(circle at 50% 45%,rgba(255,255,255,.8) 0 3%,transparent 3.5%),
-    repeating-radial-gradient(circle at 50% 45%,transparent 0 35px,rgba(0,0,0,.18) 36px 37px),
-    linear-gradient(135deg,#ebe9e2,#b8b5ac);
-}
-.art-cyber{
-  background:
-    radial-gradient(circle at 50% 50%,#222 0 2%,transparent 2.5%),
-    repeating-conic-gradient(from 0deg,transparent 0 10deg,rgba(0,0,0,.14) 10deg 11deg),
-    #dedbd3;
-}
-.card-a{transform:translate(-50%,-50%) rotate(-18deg) translateX(-220px);z-index:1}
-.card-b{transform:translate(-50%,-50%) rotate(-7deg) translateX(-75px);z-index:3}
-.card-c{transform:translate(-50%,-50%) rotate(5deg) translateX(70px);z-index:4}
-.card-d{transform:translate(-50%,-50%) rotate(15deg) translateX(215px);z-index:2}
-.card-shadow{
-  position:absolute;width:55%;height:30px;left:22%;bottom:12%;
-  background:rgba(0,0,0,.12);filter:blur(25px);border-radius:50%;
-}
-.card-stage:hover .card-a{transform:translate(-50%,-50%) rotate(-23deg) translateX(-255px) translateY(-12px)}
-.card-stage:hover .card-b{transform:translate(-50%,-50%) rotate(-9deg) translateX(-82px) translateY(-22px)}
-.card-stage:hover .card-c{transform:translate(-50%,-50%) rotate(7deg) translateX(77px) translateY(-22px)}
-.card-stage:hover .card-d{transform:translate(-50%,-50%) rotate(20deg) translateX(245px) translateY(-12px)}
-.archive-caption{
-  display:flex;justify-content:space-between;
-  border-top:1px solid var(--light-line);padding-top:17px;opacity:.52
+.light-start .hero-avatar {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* ---------- FIXED CHOICES GARAGE STUDIO CARDS (NO GLITCH/OVERLAP) ---------- */
@@ -271,19 +255,4 @@ body.light-start .nav{color:#fff}
 /* Smooth fade on non-hovered elements to direct focus */
 .choices-stage:hover .archive-card:not(:hover) {
   filter: brightness(0.55);
-}
-
-@media(max-width:760px){
-  .cards-top{grid-template-columns:1fr;gap:35px}
-  .card-stage,.choices-stage{height:115vw;min-height:420px;margin-top:55px}
-  .archive-card{width:45vw;height:60vw;max-height:350px}
-  .card-a,.card-choice-1{transform:translate(-50%,-50%) rotate(-18deg) translateX(-25vw); z-index:10;}
-  .card-b,.card-choice-2{transform:translate(-50%,-50%) rotate(-6deg) translateX(-8vw); z-index:20;}
-  .card-c,.card-choice-3{transform:translate(-50%,-50%) rotate(6deg) translateX(8vw); z-index:30;}
-  .card-d,.card-choice-4{transform:translate(-50%,-50%) rotate(18deg) translateX(25vw); z-index:40;}
-  
-  .choices-stage .archive-card:hover {
-    transform: translate(-50%, -50%) scale(1.04) translateY(-15px) rotate(0deg) !important;
-  }
-  .archive-caption{gap:20px;line-height:1.5}.archive-caption span:last-child{text-align:right}
 }
