@@ -83,8 +83,7 @@ footer div{display:flex;gap:25px}
   .cursor{display:none}
 }
 
-
-/* ---------- WHITE-FIRST EDITORIAL OPENING ---------- */
+/* ---------- LIGHT START THEME ---------- */
 body.light-start{background:var(--white);color:var(--black)}
 body.light-start .nav{color:#fff}
 .light-start .hero{background:var(--white);color:var(--black)}
@@ -168,60 +167,81 @@ body.light-start .nav{color:#fff}
   border-top:1px solid var(--light-line);padding-top:17px;opacity:.52
 }
 
-/* ---------- CHOICES GARAGE FAN DECK (WHITE BACKGROUND PREMIUM CAR CARDS) ---------- */
+/* ---------- CHOICES GARAGE STUDIO CARDS (SCREENSHOT MATCH) ---------- */
 .choices-deck-section {
   background-color: var(--black);
   color: var(--white);
   overflow: hidden;
 }
-
 .choices-deck-section .archive-kicker { color: var(--gray); }
 .choices-deck-section .archive-note { color: #a1a1aa; }
 .choices-deck-section .archive-caption { border-top-color: var(--line); }
 
-/* Clean studio white background cards for the high-end cars */
 .choices-stage .archive-card {
   background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+  border-radius: 18px;
 }
 
 .choices-stage .card-no {
   color: #111;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 3px 8px;
+  border-radius: 4px;
 }
 
-.choices-stage .archive-card span {
-  color: #111;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-/* High-end vehicle images on crisp premium studio white backgrounds */
+/* Studio-styled car images with clean white background look */
 .vehicle-art-1 {
   background: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
 }
 .vehicle-art-2 {
-  background: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-}
-.vehicle-art-3 {
   background: url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
 }
+.vehicle-art-3 {
+  background: url('https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+}
 .vehicle-art-4 {
-  background: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+  background: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
 }
 
-/* 4-Card Fan Deck Positioning (Spread across screen) */
+/* Bottom banner matching your reference screenshot (dark gradient fade with white text & arrow) */
+.vehicle-info-bar {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 26px 20px 18px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.vehicle-info-bar span {
+  position: static;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.v-arrow {
+  font-size: 18px;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+.archive-card:hover .v-arrow {
+  transform: translateX(4px);
+}
+
+/* 4-Card Fan Deck Positioning */
 .card-choice-1 { transform: translate(-50%,-50%) rotate(-18deg) translateX(-230px); z-index:1; }
 .card-choice-2 { transform: translate(-50%,-50%) rotate(-6deg) translateX(-80px); z-index:3; }
 .card-choice-3 { transform: translate(-50%,-50%) rotate(6deg) translateX(80px); z-index:4; }
 .card-choice-4 { transform: translate(-50%,-50%) rotate(18deg) translateX(230px); z-index:2; }
 
-/* 4-Card Fan Deck Hover Expansion */
+/* Fan Deck Hover Expansion */
 .choices-stage:hover .card-choice-1 { transform: translate(-50%,-50%) rotate(-24deg) translateX(-275px) translateY(-14px); }
 .choices-stage:hover .card-choice-2 { transform: translate(-50%,-50%) rotate(-8deg) translateX(-95px) translateY(-24px); }
 .choices-stage:hover .card-choice-3 { transform: translate(-50%,-50%) rotate(8deg) translateX(95px) translateY(-24px); }
 .choices-stage:hover .card-choice-4 { transform: translate(-50%,-50%) rotate(24deg) translateX(275px) translateY(-14px); }
-
 
 @media(max-width:760px){
   .cards-top{grid-template-columns:1fr;gap:35px}
