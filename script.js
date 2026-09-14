@@ -30,7 +30,6 @@ if (cursor) {
   });
 }
 
-// Slight editorial parallax on the hero graphic.
 window.addEventListener('scroll', () => {
   const shape = document.querySelector('.hero-shape');
   if (shape) shape.style.transform = `translateY(${window.scrollY * 0.08}px) rotate(-18deg)`;
